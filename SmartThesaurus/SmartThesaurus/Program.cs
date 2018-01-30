@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using System.IO;
 using Word = Microsoft.Office.Interop.Word;
+
 
 
 namespace SmartThesaurus
@@ -13,50 +15,32 @@ namespace SmartThesaurus
     {
         public static void Main()
         {
-            try
-            {   // Open the text file using a stream reader.
-                using (StreamReader sr = new StreamReader(@"..\..\TestsLecture\hello.txt"))
-                {
-                    // Read the stream to a string, and write the string to the console.
-                    String line = sr.ReadToEnd();
-                    Console.WriteLine(line);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
-            }
-            Console.ReadLine();
+            
 
             ///////////////LIRE UN FICHIER TXT////////////////////////
-
-            //using (StreamReader reader = new StreamReader("../../Test2.docx"))
-            //{
-            //    string[] test;
-
-            //    string content = reader.ReadToEnd();
-            //    reader.Close();
-
-            //    test = content.Split(' ');
-
-            //    foreach(string element in test)
+            
+            //try
+            //{   // Open the text file using a stream reader.
+            //    using (StreamReader sr = new StreamReader(@"..\..\TestsLecture\hello.txt"))
             //    {
-            //        Console.WriteLine(element);
+            //        // Read the stream to a string, and write the string to the console.
+            //        String line = sr.ReadToEnd();
+            //        Console.WriteLine(line);
             //    }
-
-
-
-
-            //    Console.ReadLine();
             //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("The file could not be read:");
+            //    Console.WriteLine(e.Message);
+            //}
+            //Console.ReadLine();
 
             ///////////////////////////////////////////////////////////
 
 
             ///////////////LIRE UN FICHIER DOCX////////////////////////
 
-            object path = @"K:\INF\Eleves\Temp\LOL.docx";
+            object path = @"F:\ETML\P_OO\P_OO\SmartThesaurus\SmartThesaurus\TestsLecture\LOL.docx";
 
             string txtPath = "TxtOfWord.txt";
 
@@ -67,8 +51,9 @@ namespace SmartThesaurus
             try
             {
                 doc = app.Documents.Open(ref path, ref missing, ref readOnly, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
-                string text = doc.Content.Text;
-                //File.WriteAllText(txtPath, text);
+                ////string text = doc.Content.Text;
+                string text = doc.Content.FormattedText.Text;
+                File.WriteAllText(txtPath, text, new UTF8Encoding());
                 Console.WriteLine("Converted!");
             }
             catch
@@ -81,23 +66,13 @@ namespace SmartThesaurus
                 app.Quit(ref saveChanges, ref missing, ref missing);
             }
 
+            Console.ReadLine();
+
             ///////////////////////////////////////////////////////////
 
             //////////////////LIRE UN FICHIER XLX/////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //////////////////////////////////////////////////////
+            
+            //////////////////////////////////////////////////////////
         }
 
 
