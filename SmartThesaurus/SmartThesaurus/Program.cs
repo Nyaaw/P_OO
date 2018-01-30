@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using System.IO;
 using Word = Microsoft.Office.Interop.Word;
-
-
+using System.Windows.Forms;
+using System.IO;
+using System.Text;
+using Microsoft.Office.Interop.Word;
+using System.Windows;
 
 namespace SmartThesaurus
 {
@@ -50,11 +47,21 @@ namespace SmartThesaurus
             object readOnly = true;
             try
             {
-                doc = app.Documents.Open(ref path, ref missing, ref readOnly, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
-                ////string text = doc.Content.Text;
-                string text = doc.Content.FormattedText.Text;
-                File.WriteAllText(txtPath, text, new UTF8Encoding());
-                Console.WriteLine("Converted!");
+               doc = app.Documents.Open(ref path, ref missing, ref readOnly, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
+                //string text = doc.Content.Text;
+                //File.WriteAllText(txtPath, text, new UTF8Encoding());
+                //Console.WriteLine("Converted!");
+
+                //doc.ActiveWindow.Selection.WholeStory();
+                //doc.ActiveWindow.Selection.Copy();
+                //IDataObject idata = Clipboard.GetDataObject();
+                //Console.WriteLine(Clipboard.GetText());
+
+                doc.Range().Copy();
+                IDataObject n = Clipboard.GetDataObject();
+                Console.WriteLine(n.GetData(DataFormats.Text).ToString());
+
+                doc.Close(WdSaveOptions.wdDoNotSaveChanges, WdOriginalFormat.wdOriginalDocumentFormat);
             }
             catch
             {
