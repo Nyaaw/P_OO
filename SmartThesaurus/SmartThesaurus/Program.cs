@@ -15,7 +15,7 @@ namespace SmartThesaurus
         {
             try
             {   // Open the text file using a stream reader.
-                using (StreamReader sr = new StreamReader("hello.cs"))
+                using (StreamReader sr = new StreamReader(@"..\..\TestsLecture\hello.txt"))
                 {
                     // Read the stream to a string, and write the string to the console.
                     String line = sr.ReadToEnd();
