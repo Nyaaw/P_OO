@@ -5,6 +5,11 @@ using System.IO;
 using System.Text;
 using Microsoft.Office.Interop.Word;
 using System.Windows;
+using RasterEdge.Imaging.Basic;
+using RasterEdge.XDoc.Converter;
+using RasterEdge.XDoc.PDF;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace SmartThesaurus
 {
@@ -12,10 +17,10 @@ namespace SmartThesaurus
     {
         public static void Main()
         {
-            
+
 
             ///////////////LIRE UN FICHIER TXT////////////////////////
-            
+
             //try
             //{   // Open the text file using a stream reader.
             //    using (StreamReader sr = new StreamReader(@"..\..\TestsLecture\hello.txt"))
@@ -37,51 +42,164 @@ namespace SmartThesaurus
 
             ///////////////LIRE UN FICHIER DOCX////////////////////////
 
-            object path = @"F:\ETML\P_OO\P_OO\SmartThesaurus\SmartThesaurus\TestsLecture\LOL.docx";
+            //object path = @"F:\ETML\P_OO\P_OO\SmartThesaurus\SmartThesaurus\TestsLecture\LOL.docx";
 
-            string txtPath = "TxtOfWord.txt";
+            //string txtPath = "TxtOfWord.txt";
 
-            Word.Application app = new Word.Application();
-            Word.Document doc;
-            object missing = Type.Missing;
-            object readOnly = true;
-            try
-            {
-               doc = app.Documents.Open(ref path, ref missing, ref readOnly, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
-                //string text = doc.Content.Text;
-                //File.WriteAllText(txtPath, text, new UTF8Encoding());
-                //Console.WriteLine("Converted!");
+            //Word.Application app = new Word.Application();
+            //Word.Document doc;
+            //object missing = Type.Missing;
+            //object readOnly = true;
+            //try
+            //{
+            //   doc = app.Documents.Open(ref path, ref missing, ref readOnly, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
+            //    //string text = doc.Content.Text;
+            //    //File.WriteAllText(txtPath, text, new UTF8Encoding());
+            //    //Console.WriteLine("Converted!");
 
-                //doc.ActiveWindow.Selection.WholeStory();
-                //doc.ActiveWindow.Selection.Copy();
-                //IDataObject idata = Clipboard.GetDataObject();
-                //Console.WriteLine(Clipboard.GetText());
+            //    //doc.ActiveWindow.Selection.WholeStory();
+            //    //doc.ActiveWindow.Selection.Copy();
+            //    //IDataObject idata = Clipboard.GetDataObject();
+            //    //Console.WriteLine(Clipboard.GetText());
 
-                doc.Range().Copy();
-                IDataObject n = Clipboard.GetDataObject();
-                Console.WriteLine(n.GetData(DataFormats.Text).ToString());
+            //    doc.Range().Copy();
+            //    IDataObject n = Clipboard.GetDataObject();
+            //    Console.WriteLine(n.GetData(DataFormats.Text).ToString());
 
-                doc.Close(WdSaveOptions.wdDoNotSaveChanges, WdOriginalFormat.wdOriginalDocumentFormat);
-            }
-            catch
-            {
-                Console.WriteLine("An error occured. Please check the file path to your word document, and whether the word document is valid.");
-            }
-            finally
-            {
-                object saveChanges = Word.WdSaveOptions.wdDoNotSaveChanges;
-                app.Quit(ref saveChanges, ref missing, ref missing);
-            }
+            //    doc.Close(WdSaveOptions.wdDoNotSaveChanges, WdOriginalFormat.wdOriginalDocumentFormat);
+            //}
+            //catch
+            //{
+            //    Console.WriteLine("An error occured. Please check the file path to your word document, and whether the word document is valid.");
+            //}
+            //finally
+            //{
+            //    object saveChanges = Word.WdSaveOptions.wdDoNotSaveChanges;
+            //    app.Quit(ref saveChanges, ref missing, ref missing);
+            //}
 
-            Console.ReadLine();
+            //Console.ReadLine();
 
             ///////////////////////////////////////////////////////////
 
-            //////////////////LIRE UN FICHIER XLX/////////////////////
+            //////////////////LIRE UN FICHIER PDF/////////////////////
+
+
+            convertPdfToText();
+
             
+
             //////////////////////////////////////////////////////////
         }
 
+
+        #region pdf to text (file to file)
+        internal static void convertPdfToText()
+        {
+            String inputFilePath = @"C:\Users\dutoitrugu\Desktop\2C-E-P_Web2-ISI001-CdC.pdf";
+            String outputFilePath = @"C:\Users\dutoitrugu\Desktop\Test.txt";
+            StreamWriter writer = new StreamWriter(outputFilePath);
+            PDFDocument doc = new PDFDocument(inputFilePath);
+            PDFTextMgr textMgr = PDFTextHandler.ExportPDFTextManager(doc);
+            int pageCount = doc.GetPageCount();
+            for (int i = 0; i < pageCount; i++)
+            {
+                PDFPage page = (PDFPage)doc.GetPage(i);
+                List<PDFTextLine> pageTextLines = textMgr.ExtractTextLine(page);
+                writeTextLines(pageTextLines, writer);
+            }
+            writer.Close();
+        }
+        #endregion
+
+        //#region pdf to text (stream to stream)
+        //internal static void convertPdfStreamToText()
+        //{
+        //    String inputFilePath = @"C:\demo.pdf";
+        //    byte[] arr = File.ReadAllBytes(inputFilePath);
+        //    Stream inputStream = new MemoryStream(arr);
+        //    Stream stream = new MemoryStream();
+        //    StreamWriter writer = new StreamWriter(stream);
+        //    PDFDocument doc = new PDFDocument(inputStream);
+        //    PDFTextMgr textMgr = PDFTextHandler.ExportPDFTextManager(doc);
+        //    int pageCount = doc.GetPageCount();
+        //    for (int i = 0; i < pageCount; i++)
+        //    {
+        //        PDFPage page = (PDFPage)doc.GetPage(i);
+        //        List<PDFTextLine> pageTextLines = textMgr.ExtractTextLine(page);
+        //        writeTextLines(pageTextLines, writer);
+        //    }
+        //    writer.Close();
+        //}
+
+        private static void writeTextLines(List<PDFTextLine> pageTextLines, StreamWriter writer)
+        {
+            String lineText = "";
+            float positionY = 0f;
+            float height = 0f;
+            float positionX = 0f;
+
+          
+            if (pageTextLines != null)
+            {
+                for (int i = 0; i < pageTextLines.Count; i++)
+                {
+                    RectangleF rectangle = pageTextLines[i].GetBoundary();
+                    if (i != 0 && !isEqual(positionY + height, rectangle.Y + rectangle.Height))
+                    {
+                        writer.WriteLine(lineText);
+                        lineText = "";
+                    }
+                    if (positionX > rectangle.X)
+                    {
+                        lineText = getTextLineContent(pageTextLines[i]) + " " + lineText;
+                    }
+                    else
+                    {
+                        lineText += getTextLineContent(pageTextLines[i]);
+                        lineText += "    ";
+                    }
+                    positionY = rectangle.Y;
+                    height = rectangle.Height;
+                    positionX = rectangle.X;
+                    if (i == pageTextLines.Count - 1)
+                    {
+                        writer.WriteLine(lineText);
+                    }
+                }
+            }
+            
+
+            writer.WriteLine(" ");
+            writer.WriteLine(" ");
+            writer.Flush();
+        }
+
+        private static String getTextLineContent(PDFTextLine pdfTextLine)
+        {
+            List<PDFTextWord> words = pdfTextLine.GetTextWord();
+            String wordText = "";
+            float positionX = 0;
+            float width = 0;
+            for (int i = 0; i < words.Count; i++)
+            {
+                RectangleF rectange = words[i].GetBoundary();
+                if (i != 0 && !isEqual(positionX + width, rectange.X))
+                    wordText += " ";
+                wordText += words[i].GetContent();
+                positionX = rectange.X;
+                width = rectange.Width;
+            }
+
+            return wordText;
+        }
+
+        private static bool isEqual(float first, float second)
+        {
+            if (first - second < 2F && first - second > -2F)
+                return true;
+            return false;
+        }
 
     }
 }
