@@ -99,10 +99,28 @@ namespace SmartThesaurus
             // Open Excel and get first worksheet.
             var application = new Microsoft.Office.Interop.Excel.Application();
             var workbook = application.Workbooks.Open(fileName);
-            var worksheet = workbook.Worksheets[1] as
-                Microsoft.Office.Interop.Excel.Worksheet;
+            var worksheet = workbook.Worksheets[1] as Microsoft.Office.Interop.Excel.Worksheet;
 
-            string text = worksheet.Cells[1, 1].value;
+            int i = 1;
+            int j = 1;
+
+            string text = "";
+
+            do
+            {
+                text += worksheet.Cells[i, j].value + " ";
+
+                j++;
+
+                if(j == 20)
+                {
+                    j = 1;
+                    i++;
+                }
+
+            } while (worksheet.Cells[i, j].value != null);
+
+            
 
             Console.WriteLine(text);
 
