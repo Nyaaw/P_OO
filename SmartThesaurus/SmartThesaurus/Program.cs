@@ -96,7 +96,7 @@ namespace SmartThesaurus
 
             const string fileName = @"C:\Users\dutoitrugu\Desktop\test.xlsx";
            
-            // Open Excel and get first worksheet.
+            // Ouvrir un ducument Excel
             var application = new Microsoft.Office.Interop.Excel.Application();
             var workbook = application.Workbooks.Open(fileName);
             var worksheet = workbook.Worksheets[1] as Microsoft.Office.Interop.Excel.Worksheet;
@@ -106,6 +106,7 @@ namespace SmartThesaurus
 
             string text = "";
 
+            //Vas lire tout le texte cellule par cellule jusqu'à ce que la cellule sois null et vas l'ajouter dans une variable séparer d'espace
             do
             {
                 text += worksheet.Cells[i, j].value + " ";
@@ -126,7 +127,7 @@ namespace SmartThesaurus
 
             Console.ReadLine();
 
-            // Save.
+            //Save.
             //workbook.Save();
 
             /////////////////////////////////////////////////////////
