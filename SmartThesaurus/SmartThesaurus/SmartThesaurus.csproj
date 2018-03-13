@@ -51,10 +51,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RasterEdge.DocImageSDK\RasterEdge.DocImageSDK10.4.9(release)\Bin\DotNet Framework4.0\x86\RasterEdge.Imaging.Basic.Codec.dll</HintPath>
     </Reference>
-    <Reference Include="RasterEdge.Imaging.DICOM, Version=10.4.9.20111, Culture=neutral, PublicKeyToken=b638ab5dea8d8105, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\RasterEdge.DocImageSDK\RasterEdge.DocImageSDK10.4.9(release)\Bin\DotNet Framework4.0\x86\RasterEdge.Imaging.DICOM.dll</HintPath>
-    </Reference>
     <Reference Include="RasterEdge.Imaging.Drawing, Version=10.4.9.20111, Culture=neutral, PublicKeyToken=b638ab5dea8d8105, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RasterEdge.DocImageSDK\RasterEdge.DocImageSDK10.4.9(release)\Bin\DotNet Framework4.0\x86\RasterEdge.Imaging.Drawing.dll</HintPath>

@@ -11,9 +11,11 @@ using RasterEdge.XDoc.PDF;
 using System.Collections.Generic;
 using System.Drawing;
 using Microsoft.Office.Interop.Excel;
-/////////////////Lire un document Excel///////////////////
 
-            const string fileName = @"C:\Users\dutoitrugu\Desktop\test.xlsx";
+
+			/////////////////Lire un document Excel///////////////////
+
+            const string fileName = @"F:\..\..\TestsLecture\test.xlsx";
            
             // Ouvrir un ducument Excel
             var application = new Microsoft.Office.Interop.Excel.Application();

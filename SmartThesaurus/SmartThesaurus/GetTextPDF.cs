@@ -15,8 +15,8 @@ using Microsoft.Office.Interop.Excel;
 		#region pdf to text (file to file)
         internal static void convertPdfToText()
         {
-            String inputFilePath = @"C:\Users\dutoitrugu\Desktop\2C-E-P_Web2-ISI001-CdC.pdf";
-            String outputFilePath = @"C:\Users\dutoitrugu\Desktop\Test.txt";
+            String inputFilePath = @"F:\..\..\TestsLecture\hello.pdf";
+            String outputFilePath = @"F:\..\..\TestsLecture\Test.txt";
             StreamWriter writer = new StreamWriter(outputFilePath);
             PDFDocument doc = new PDFDocument(inputFilePath);
             PDFTextMgr textMgr = PDFTextHandler.ExportPDFTextManager(doc);
